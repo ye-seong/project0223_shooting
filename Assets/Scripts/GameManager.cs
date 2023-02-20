@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Transform[] spawnPoints;
-    public GameObject enemyPrefab;
+    public GameObject[] enemyPrefabs;
 
     public float curEnemySpawnDelay;
     public float nextEnemySpawnDelay;
@@ -31,7 +31,10 @@ public class GameManager : MonoBehaviour
 
     void SpawnEnemy()
     {
-        int ranPoint = Random.Range(0, 3);
-        Instantiate(enemyPrefab, spawnPoints[ranPoint].position, Quaternion.identity);
+        int ranType = Random.Range(0, 3);
+        int ranPoint = Random.Range(0, 7);
+        GameObject goEnemy = Instantiate(enemyPrefabs[ranType], spawnPoints[ranPoint].position, Quaternion.identity);
+        Enemy enemyLogic = goEnemy.GetComponent<Enemy>();
+        enemyLogic.Move(ranPoint);
     }
 }

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed;
+    public float speed = 0f;
+
+    public float power = 0f;
+
     public bool isTouchTop = false;
     public bool isTouchBottom = false;
     public bool isTouchRight = false;
@@ -12,7 +15,9 @@ public class Player : MonoBehaviour
 
     Animator anim;
 
-    public GameObject bulletPrefab;
+    public GameObject bulletPrefabA;
+    public GameObject bulletPrefabB;
+
     public float curBulletDelay = 0f;
     public float maxBulletDelay = 1f;
 
@@ -59,16 +64,65 @@ public class Player : MonoBehaviour
         if (curBulletDelay < maxBulletDelay)
             return;
 
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        Rigidbody2D rd = bullet.GetComponent<Rigidbody2D>();
-        rd.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-
+        Power();
+        
         curBulletDelay = 0;
     }
 
     void ReloadBullet()
     {
         curBulletDelay += Time.deltaTime;
+    }
+
+    void Power()
+    {
+        switch(power)
+        {
+            case 1:
+                {
+                    GameObject bullet = Instantiate(bulletPrefabA, transform.position, Quaternion.identity);
+                    Rigidbody2D rd = bullet.GetComponent<Rigidbody2D>();
+                    rd.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                }
+                break;
+            case 2:
+                {
+                    GameObject bulletR = Instantiate(bulletPrefabA, 
+                        transform.position + Vector3.right * 0.1f, 
+                        Quaternion.identity);
+                    Rigidbody2D rdR = bulletR.GetComponent<Rigidbody2D>();
+                    rdR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+
+                    GameObject bulletL = Instantiate(bulletPrefabA, 
+                        transform.position + Vector3.left * 0.1f, 
+                        Quaternion.identity);
+                    Rigidbody2D rdL = bulletL.GetComponent<Rigidbody2D>();
+                    rdL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                }
+                break;
+            case 3:
+                {
+                    GameObject bulletR = Instantiate(bulletPrefabA,
+                        transform.position + Vector3.right * 0.25f,
+                        Quaternion.identity);
+                    Rigidbody2D rdR = bulletR.GetComponent<Rigidbody2D>();
+                    rdR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+
+                    GameObject bulletC = Instantiate(bulletPrefabB,
+                        transform.position,
+                        Quaternion.identity);
+                    Rigidbody2D rdC = bulletC.GetComponent<Rigidbody2D>();
+                    rdC.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+
+                    GameObject bulletL = Instantiate(bulletPrefabA,
+                        transform.position + Vector3.left * 0.25f,
+                        Quaternion.identity);
+                    Rigidbody2D rdL = bulletL.GetComponent<Rigidbody2D>();
+                    rdL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                }
+                break;
+        }
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

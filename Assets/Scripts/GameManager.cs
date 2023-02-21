@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public float curEnemySpawnDelay;
     public float nextEnemySpawnDelay;
 
+    public GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,25 @@ public class GameManager : MonoBehaviour
         int ranPoint = Random.Range(0, 7);
         GameObject goEnemy = Instantiate(enemyPrefabs[ranType], spawnPoints[ranPoint].position, Quaternion.identity);
         Enemy enemyLogic = goEnemy.GetComponent<Enemy>();
+        enemyLogic.playerObject = player;
         enemyLogic.Move(ranPoint);
+    }
+
+    public void GameOver()
+    {
+        
+    }
+
+    public void RespawnPlayer()
+    {
+        Invoke("AlivePlayer", 1.0f);
+    }
+
+    void AlivePlayer()
+    {
+        player.transform.position = Vector3.down * 4.2f;
+        player.SetActive(true);
+        Player playrLogic = player.GetComponent<Player>();
+        playrLogic.isHit = false;
     }
 }

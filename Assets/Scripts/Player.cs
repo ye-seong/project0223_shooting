@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
 
     public float power = 0f;
 
+    public float life = 3f;
+    public bool isHit = false;
+
     public bool isTouchTop = false;
     public bool isTouchBottom = false;
     public bool isTouchRight = false;
@@ -20,6 +23,8 @@ public class Player : MonoBehaviour
 
     public float curBulletDelay = 0f;
     public float maxBulletDelay = 1f;
+
+    public GameObject gameMgrObj;
 
     private void Start()
     {
@@ -144,6 +149,25 @@ public class Player : MonoBehaviour
                     isTouchLeft = true;
                     break;
             }
+        }
+        if (collision.gameObject.tag == "EnemyBullet")
+        {
+            if (isHit)
+                return;
+
+            isHit = true;
+            life--;
+
+            GameManager gmLogic = gameMgrObj.GetComponent<GameManager>();
+            if (life == 0)
+            {
+                gmLogic.GameOver();
+            }
+            else
+            {
+                gmLogic.RespawnPlayer();
+            }
+            gameObject.SetActive(false);
         }
     }
 

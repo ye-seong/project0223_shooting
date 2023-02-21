@@ -559,6 +559,7 @@ MonoBehaviour:
   - {fileID: 5269843407917066791, guid: 7e99316e3a1654d44b27b1de2dcd9ce9, type: 3}
   curEnemySpawnDelay: 0
   nextEnemySpawnDelay: 0.5
+  player: {fileID: 1379493180}
 --- !u!4 &705055841
 Transform:
   m_ObjectHideFlags: 0
@@ -994,6 +995,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   power: 3
+  life: 3
+  isHit: 0
   isTouchTop: 0
   isTouchBottom: 0
   isTouchRight: 0
@@ -1002,6 +1005,7 @@ MonoBehaviour:
   bulletPrefabB: {fileID: 2491362943592857990, guid: f3d86113e5fe7844fadfa39f51441db1, type: 3}
   curBulletDelay: 0
   maxBulletDelay: 0.3
+  gameMgrObj: {fileID: 705055839}
 --- !u!1 &1564682084
 GameObject:
   m_ObjectHideFlags: 0

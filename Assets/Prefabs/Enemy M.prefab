@@ -156,3 +156,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 1562523132, guid: 57564a374edcf564296515874b70b1fd, type: 3}
   - {fileID: -870099256, guid: 57564a374edcf564296515874b70b1fd, type: 3}
+  bulletPrefab: {fileID: 2086697209856981980, guid: 1628577596ae4e34198f20e4bed33665, type: 3}
+  curBulletDelay: 0
+  maxBulletDelay: 1
+  playerObject: {fileID: 0}

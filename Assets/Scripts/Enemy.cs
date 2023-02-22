@@ -35,6 +35,12 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerObject != null && playerObject.activeSelf == false)
+        {
+            Debug.LogError("플레이어가 화면에 없다");
+            return;
+        }
+
         Fire();
         ReloadBullet();
     }
@@ -54,8 +60,16 @@ public class Enemy : MonoBehaviour
         GameObject bulletObj = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Rigidbody2D rdBullet = bulletObj.GetComponent<Rigidbody2D>();
         
-        Vector3 dirVec = playerObject.transform.position - transform.position;
-        rdBullet.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+        if (playerObject != null)
+        {
+            Vector3 dirVec = playerObject.transform.position - transform.position;
+            rdBullet.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+        }
+        else
+        {
+            rdBullet.AddForce(Vector2.down * 3, ForceMode2D.Impulse);
+        }
+        
     }
 
     void ReloadBullet()
@@ -95,7 +109,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnHit(float BulletPower)
+    public void OnHit(float BulletPower)
     {
         health -= BulletPower;
         spriteRender.sprite = sprites[1];

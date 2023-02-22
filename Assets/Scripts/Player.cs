@@ -20,11 +20,12 @@ public class Player : MonoBehaviour
 
     public GameObject bulletPrefabA;
     public GameObject bulletPrefabB;
+    public GameObject boomObj;
 
     public float curBulletDelay = 0f;
     public float maxBulletDelay = 1f;
 
-    public GameObject gameMgrObj;
+    public int nScore;
 
     private void Start()
     {
@@ -37,6 +38,24 @@ public class Player : MonoBehaviour
         Move();
         Fire();
         ReloadBullet();
+    }
+
+    private void FixedUpdate()
+    {
+        if (isHit)
+        {
+            float val = Mathf.Sin(Time.time * 50);
+            if (val > 0)
+            {
+                gameObject.GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+            else
+            {
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            }
+            return;
+        }
     }
 
     void Move()
@@ -158,17 +177,70 @@ public class Player : MonoBehaviour
             isHit = true;
             life--;
 
-            GameManager gmLogic = gameMgrObj.GetComponent<GameManager>();
             if (life == 0)
             {
-                gmLogic.GameOver();
+                GameManager.instance.GameOver();
             }
             else
             {
-                gmLogic.RespawnPlayer();
+                GameManager.instance.RespawnPlayer();
+                Invoke("Disappear", 1.0f); //=>코루틴으로 변경하면 변수를 넘길수 있어 더 편하게 시간관리를 쓸수 있다.
             }
-            gameObject.SetActive(false);
         }
+        if (collision.gameObject.tag == "Item")
+        {
+            Item item = collision.gameObject.GetComponent<Item>();
+            switch(item.type)
+            {
+                case ItemType.Coin:
+                    nScore += 100;
+                    break;
+                case ItemType.Power:
+                    power++;
+                    if (power >= 3)
+                        power = 3;
+                    break;
+                case ItemType.Boom:
+                    {
+                        boomObj.SetActive(true);
+                        Invoke("OffBoomEffect", 4.0f);
+
+                        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                        for(int i=0; i < enemies.Length; i++)
+                        {
+                            Enemy enemyLogic = enemies[i].GetComponent<Enemy>();
+                            enemyLogic.OnHit(1000);
+                            Destroy(enemies[i]);
+                        }
+                        GameObject[] enemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
+                        for(int i=0; i < enemyBullets.Length; i++)
+                        {
+                            Destroy(enemyBullets[i]);
+                        }
+                    }
+                    break;
+            }
+
+            Destroy(collision.gameObject);
+        }
+    }
+
+    void OffBoomEffect()
+    {
+        boomObj.SetActive(false);
+    }
+
+    void Disappear()
+    {
+        gameObject.SetActive(false);
+        Invoke("Appear", 1f);
+    }
+
+    void Appear()
+    {
+        transform.position = Vector3.down * 4.2f;
+        gameObject.SetActive(true);
+        isHit = false;
     }
 
     private void OnTriggerExit2D(Collider2D collision)

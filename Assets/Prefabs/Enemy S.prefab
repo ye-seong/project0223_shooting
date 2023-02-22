@@ -143,5 +143,5 @@ MonoBehaviour:
   - {fileID: 28562049, guid: 57564a374edcf564296515874b70b1fd, type: 3}
   bulletPrefab: {fileID: 2086697209856981980, guid: 1628577596ae4e34198f20e4bed33665, type: 3}
   curBulletDelay: 0
-  maxBulletDelay: 1
+  maxBulletDelay: 1.5
   playerObject: {fileID: 0}

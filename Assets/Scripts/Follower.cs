@@ -7,11 +7,11 @@ public class Follower : MonoBehaviour
     public Vector3 followPos;
     public int followDelay;
     public Transform parent;
-    public Queue<Vector3> parentPos;
+    public Queue<Vector3> parentPosQueue;
     // Start is called before the first frame update
     void Start()
     {
-        parentPos = new Queue<Vector3>();
+        parentPosQueue = new Queue<Vector3>();
     }
 
     // Update is called once per frame
@@ -23,13 +23,20 @@ public class Follower : MonoBehaviour
 
     void Watch()
     {
-        if (!parentPos.Contains(parent.position))
-            parentPos.Enqueue(parent.position);
+        if (!parentPosQueue.Contains(parent.position))
+        {
+            parentPosQueue.Enqueue(parent.position);
+            Debug.Log(parent.position);
+        }
+            
 
-        if (parentPos.Count > followDelay)
-            followPos = parentPos.Dequeue();
-        else if (parentPos.Count < followDelay)
+        if (parentPosQueue.Count > followDelay)
+            followPos = parentPosQueue.Dequeue();
+        else if (parentPosQueue.Count < followDelay)
             followPos = parent.position;
+
+
+        
     }
 
     void Move()

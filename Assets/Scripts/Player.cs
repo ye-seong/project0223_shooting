@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
 
     public GameObject bulletPrefabA;
     public GameObject bulletPrefabB;
-    public GameObject boomObj;
 
     public float curBulletDelay = 0f;
     public float maxBulletDelay = 1f;
@@ -202,32 +201,13 @@ public class Player : MonoBehaviour
                     break;
                 case ItemType.Boom:
                     {
-                        boomObj.SetActive(true);
-                        Invoke("OffBoomEffect", 4.0f);
-
-                        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-                        for(int i=0; i < enemies.Length; i++)
-                        {
-                            Enemy enemyLogic = enemies[i].GetComponent<Enemy>();
-                            enemyLogic.OnHit(1000);
-                            Destroy(enemies[i]);
-                        }
-                        GameObject[] enemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
-                        for(int i=0; i < enemyBullets.Length; i++)
-                        {
-                            Destroy(enemyBullets[i]);
-                        }
+                        GameManager.instance.Boom();
                     }
                     break;
             }
 
             Destroy(collision.gameObject);
         }
-    }
-
-    void OffBoomEffect()
-    {
-        boomObj.SetActive(false);
     }
 
     void Disappear()

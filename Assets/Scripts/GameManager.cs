@@ -13,7 +13,11 @@ public class GameManager : MonoBehaviour
     public float nextEnemySpawnDelay;
 
     public Image life;
-         
+
+    public GameObject boomEffectObj;
+
+    bool isShowEnemy = true;
+
 
     private void Awake()
     {
@@ -37,7 +41,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         curEnemySpawnDelay += Time.deltaTime;
-        if (curEnemySpawnDelay > nextEnemySpawnDelay)
+        if (curEnemySpawnDelay > nextEnemySpawnDelay && isShowEnemy)
         {
             SpawnEnemy();
 
@@ -69,6 +73,40 @@ public class GameManager : MonoBehaviour
         {
             Destroy(bullets[i]);
         }
+    }
+
+    public void Boom()
+    {
+        boomEffectObj.SetActive(true);
+        Invoke("OffBoomEffect", 2.0f);
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            Enemy enemyLogic = enemies[i].GetComponent<Enemy>();
+            enemyLogic.OnHit(1000);
+            Destroy(enemies[i]);
+        }
+        GameObject[] enemyBullets = GameObject.FindGameObjectsWithTag("EnemyBullet");
+        for (int i = 0; i < enemyBullets.Length; i++)
+        {
+            Destroy(enemyBullets[i]);
+        }
+
+        isShowEnemy = false;
+
+        Invoke("ShowEnemy", 3.0f);
+    }
+
+    void OffBoomEffect()
+    {
+        boomEffectObj.SetActive(false);
+    }
+
+    void ShowEnemy()
+    {
+        isShowEnemy = true;
+        curEnemySpawnDelay = 0;
     }
     
 }

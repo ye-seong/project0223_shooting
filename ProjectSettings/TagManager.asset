@@ -3,20 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - PlayerBorder
-  - Border
-  - PlayerBullet
-  - EnemyBullet
-<<<<<<< HEAD
-  - Coinitem
-  - Poweritem
-  - Bombitem
-  - Bomb
-=======
-  - Item
-  - Enemy
->>>>>>> 27a6b118003cbf77996d83e9c599b89154cb8540
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -24,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - player
+  - 
   - 
   - 
   - 
